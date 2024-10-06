@@ -17,6 +17,14 @@ const loadAllPhones = async (status, brandName) => {
 };
 
 const displayAllPhone = (phones) => {
+  if (phones.length === 0) {
+    document.getElementById("phones-container").innerHTML = "";
+    document.getElementById("phones-container").innerHTML = `
+      <h2 class="font-bold text-xl ">Result not found! Search new item</h2>
+    `;
+    return;
+  }
+  // document.getElementById("phones-container").innerHTML = "";
   const phonesContainer = document.getElementById("phones-container");
   phones.forEach((phone) => {
     const { brand, image, phone_name, slug } = phone;
@@ -65,12 +73,12 @@ const phoneDetails = async (slugs) => {
   const data = await response.json();
   const { brand, name, slug, image } = data.data;
   const { chipSet, displaySize, memory } = data.data.mainFeatures;
-  console.log(data.data);
 
   const modalContainer = document.getElementById("modal-container");
   modalContainer.innerHTML = `
       <dialog id="my_modal_1" class="modal">
   <div class="modal-box">
+    <p class="text-gray-400 font-semibold mb-3">#${brand}</p>
     <img src="${image}"/>
     <h3 class="text-lg font-bold">${name}</h3>
     <p class="py-4">${slug}</p>
