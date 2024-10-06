@@ -58,12 +58,40 @@ const handleSearch = () => {
   }, 3000);
 };
 
-const phoneDetails = async (slug) => {
+const phoneDetails = async (slugs) => {
   const response = await fetch(
-    ` https://openapi.programming-hero.com/api/phone/${slug}`
+    ` https://openapi.programming-hero.com/api/phone/${slugs}`
   );
   const data = await response.json();
+  const { brand, name, slug, image } = data.data;
+  const { chipSet, displaySize, memory } = data.data.mainFeatures;
   console.log(data.data);
+
+  const modalContainer = document.getElementById("modal-container");
+  modalContainer.innerHTML = `
+      <dialog id="my_modal_1" class="modal">
+  <div class="modal-box">
+    <img src="${image}"/>
+    <h3 class="text-lg font-bold">${name}</h3>
+    <p class="py-4">${slug}</p>
+    <div>
+      <h2>Features:</h2>
+      <ul>
+        <li>Chipset: ${chipSet}</li>
+        <li>Display: ${displaySize}</li>
+        <li>Memory: ${memory}</li>
+
+      </ul>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+  `;
+  my_modal_1.showModal();
 };
 
 loadAllPhones(false, "iphone");
