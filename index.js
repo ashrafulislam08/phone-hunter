@@ -18,9 +18,8 @@ const loadAllPhones = async (status, brandName) => {
 
 const displayAllPhone = (phones) => {
   const phonesContainer = document.getElementById("phones-container");
-  phonesContainer.innerHTML = "";
   phones.forEach((phone) => {
-    const { brand, image, phone_name } = phone;
+    const { brand, image, phone_name, slug } = phone;
     const div = document.createElement("div");
     div.innerHTML = `
         <div class="card bg-base-100 w-96 shadow-xl">
@@ -31,9 +30,9 @@ const displayAllPhone = (phones) => {
   </figure>
   <div class="card-body">
     <h2 class="card-title">${phone_name}</h2>
-    <p>If a dog chews shoes whose shoes does he choose?</p>
-    <div class="card-actions justify-end">
-      <button class="btn btn-primary">Buy Now</button>
+    <p>${slug}</p>
+    <div class="card-actions justify-center">
+      <button onclick="phoneDetails('${slug}')" class="btn btn-primary">Show Details</button>
     </div>
   </div>
 </div>
@@ -58,3 +57,13 @@ const handleSearch = () => {
     loadAllPhones(false, searchText);
   }, 3000);
 };
+
+const phoneDetails = async (slug) => {
+  const response = await fetch(
+    ` https://openapi.programming-hero.com/api/phone/${slug}`
+  );
+  const data = await response.json();
+  console.log(data.data);
+};
+
+loadAllPhones(false, "iphone");
